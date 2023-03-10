@@ -2,4 +2,4 @@ spring:
   application:
     name: gateway
   config:
-    import: configserver:http
+    import: configserver:http://localhost:8888
