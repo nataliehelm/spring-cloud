@@ -9,7 +9,7 @@ eureka:
     hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
     
- client:
+  client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
