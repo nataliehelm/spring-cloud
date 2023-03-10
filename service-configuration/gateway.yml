@@ -10,10 +10,6 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: movie-service #identificador de la ruta
-          uri: lb://movie-service #URL donde se hará el redirect segun el predicado definido
-          predicates: #Reglas de analisis de request
-            - Path=/movie/** #path de url de request a considerar
         - id: catalog-service
           uri: lb://catalog-service
           predicates:
