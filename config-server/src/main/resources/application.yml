@@ -3,13 +3,12 @@ server:
 
 spring:
   application:
-    name: config-server
-
-cloud:
-  config:
-    server:
-      git:
-        uri: https://github.com/nataliehelm/spring-cloud-examen
-        default-label: main
-        force-pull: true
-        search-paths: service-configuration
+   name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/nataliehelm/spring-cloud-examen/
+          default-label: main
+          force-pull: true
+          search-paths: service-configuration
