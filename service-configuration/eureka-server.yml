@@ -5,9 +5,8 @@ spring:
   application:
     name: eureka-server
 eureka:
-  instance:
+ instance:
     hostname: localhost
-    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     registerWithEureka: false
     fetchRegistry: false
