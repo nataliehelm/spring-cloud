@@ -7,7 +7,6 @@ spring:
 eureka:
   instance:
     hostname: localhost
-    instance:
     instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     registerWithEureka: false
