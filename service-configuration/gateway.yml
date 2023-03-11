@@ -6,8 +6,6 @@ spring:
     name: gateway
   cloud:
     gateway:
-      loadbalancer:
-        name: RandomLoadBalancer
       discovery:
         locator:
           enabled: true
