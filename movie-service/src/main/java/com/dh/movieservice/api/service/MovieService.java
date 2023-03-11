@@ -2,6 +2,7 @@ package com.dh.movieservice.api.service;
 
 import com.dh.movieservice.domain.model.Movie;
 import com.dh.movieservice.domain.repository.MovieRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Service
 public class MovieService {
 
+    @Autowired
     private final MovieRepository repository;
 
     public MovieService(MovieRepository repository) {
