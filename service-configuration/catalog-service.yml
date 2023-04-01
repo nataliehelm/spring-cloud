@@ -5,22 +5,14 @@ spring:
   application:
     name: catalog-service
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: sa
-  jpa:
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/movie-dev
+    username: usr-movie
+    password: pwd-movie
+    jpa:
+      hibernate.ddl-auto: update
+      generate-ddl: true
+      show-sql: true
 
 eureka:
   instance:
