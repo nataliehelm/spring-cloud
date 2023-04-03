@@ -13,6 +13,12 @@ spring:
       database: catalogo
       port: 27018
 
+queue:
+  movie:
+    name: NewMovie
+  serie:
+    name: NewSerie
+
 eureka:
   instance:
     hostname: localhost
