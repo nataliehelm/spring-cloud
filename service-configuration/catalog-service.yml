@@ -10,11 +10,9 @@ spring:
       version: 4.0.2
   data:
     mongodb:
-      database: test
+      database: catalogo
       port: 27017
-queue:
-  catalog:
-    name: Catalog
+
 eureka:
   instance:
     hostname: localhost
