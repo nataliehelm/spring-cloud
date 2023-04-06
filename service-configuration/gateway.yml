@@ -22,7 +22,7 @@ spring:
           uri: lb://serie-service
           predicates:
             - Path=/series/**
-            
+
 info:
   app:
     name: ${spring.application.name}
