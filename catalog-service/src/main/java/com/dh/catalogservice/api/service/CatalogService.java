@@ -1,34 +1,65 @@
 package com.dh.catalogservice.api.service;
 
-import com.dh.catalogservice.api.client.IMovieClient;
-import com.dh.catalogservice.domain.model.Movie;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.dh.catalogservice.api.client.IMovieClient;
+import com.dh.catalogservice.api.client.ISerieClient;
+import com.dh.catalogservice.api.model.Movie;
+import com.dh.catalogservice.api.model.Serie;
+import com.dh.catalogservice.api.repository.IMovieRepository;
+import com.dh.catalogservice.api.repository.ISerieRepository;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Objects;
 
 @Service
-public class CatalogService implements ICatalogService {
+public class CatalogService {
 
-    /*private final RestTemplate clienteRest;
+    private ISerieClient iSerieClient;
+    private IMovieClient iMovieClient;
+    private IMovieRepository iMovieRepository;
+    private ISerieRepository iSerieRepository;
 
-    public CatalogService(RestTemplate clienteRest) {
-        this.clienteRest = clienteRest;
+    public CatalogService(ISerieClient iSerieClient, IMovieClient iMovieClient, IMovieRepository iMovieRepository, ISerieRepository iSerieRepository) {
+        this.iSerieClient = iSerieClient;
+        this.iMovieClient = iMovieClient;
+        this.iMovieRepository = iMovieRepository;
+        this.iSerieRepository = iSerieRepository;
+    }
+    public List<Movie> findMoviesByGenre (String genre){
+        List<Movie> movies = iMovieClient.findByGenre(genre);
+        return movies;
+    }
+    // Se configura circuit breaker en el MS de series debido a que tiene más demanda que el de películas.
+    // Si el MS falla, se abrirá el circuit breaker y catalog traerá las series de su propia base de datos
+    @CircuitBreaker(name="series",fallbackMethod = "seriesFallbackMethod")
+    @Retry(name = "series")
+    public List<Serie> findSeriesByGenre(String genre){
+        System.out.println("Ejecutando...");
+        List<Serie> series = iSerieClient.findByGenre(genre);
+        return series;
     }
 
-    @Override
-    public List<Movie> getMovieByGenre(String genre) {
+    private List<Serie> seriesFallbackMethod(String genre , CallNotPermittedException exception){
+        List<Serie> series = iSerieRepository.findByGenre(genre);
+        return series;
+    }
 
-        var url = String.format("http://localhost:8001/movies/%s", genre);
+    public Movie saveMovie (Movie movie){
+        return iMovieRepository.insert(movie);
+    }
 
-        var response = clienteRest.exchange(url, HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Movie>>() {
-                });
+    public Serie saveSerie (Serie serie){
+        return iSerieRepository.insert(serie);
+    }
 
-        return Objects.requireNonNull(response.getBody());
-    }*/
+    public List<Movie> getMovies (String genre){
+        return iMovieRepository.findByGenre(genre);
+    }
+
+    public List<Serie> getSeries (String genre){
+        return iSerieRepository.findByGenre(genre);
+    }
+
 }

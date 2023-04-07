@@ -1,27 +1,47 @@
 package com.dh.catalogservice.api.controller;
 
-import com.dh.catalogservice.api.client.IMovieClient;
-import com.dh.catalogservice.domain.model.Movie;
+import com.dh.catalogservice.api.model.Catalog;
+import com.dh.catalogservice.api.model.Movie;
+import com.dh.catalogservice.api.model.Serie;
+import com.dh.catalogservice.api.service.CatalogService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/catalog")
 public class CatalogController {
 
-    private final IMovieClient iMovieClient;
 
-    public CatalogController(IMovieClient iMovieClient) {
-        this.iMovieClient = iMovieClient;
+    private final CatalogService catalogService;
+
+    public CatalogController(CatalogService catalogService) {
+        this.catalogService = catalogService;
     }
+
 
     @GetMapping("/{genre}")
-    ResponseEntity<List<Movie>> getGenre(@PathVariable String genre) {
-      return ResponseEntity.ok().body(iMovieClient.findByGenre(genre));
+    ResponseEntity<Catalog> getAllByGenre(@PathVariable String genre){
+        Catalog catalog = new Catalog();
+        catalog.setGenre(genre);
+        List<Movie> movies = catalogService.findMoviesByGenre(genre);
+        catalog.setMovies(movies);
+        List<Serie> series = catalogService.findSeriesByGenre(genre);
+        catalog.setSeries(series);
+        return ResponseEntity.ok().body(catalog);
     }
+
+    @GetMapping("/offline/{genre}")
+    ResponseEntity<Catalog> getByGenre(@PathVariable String genre){
+        Catalog catalog = new Catalog();
+        catalog.setGenre(genre);
+        List<Movie> movies = catalogService.getMovies(genre);
+        catalog.setMovies(movies);
+        List<Serie> series = catalogService.getSeries(genre);
+        catalog.setSeries(series);
+        return ResponseEntity.ok().body(catalog);
+    }
+
 
 }
