@@ -12,6 +12,11 @@ spring:
     mongodb:
       database: catalogo
       port: 27018
+  rabbitmq:
+  username: guest
+  password: guest
+  host: localhost
+  port: 5672    
 
 queue:
   movie:
